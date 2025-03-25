@@ -141,10 +141,19 @@ export default function DiscordColoredTextGenerator() {
         }}
       >
         <Container size="md">
-          <Stack align="center" spacing="xl">
-            <Title order={1} style={{ fontFamily: 'Arial, sans-serif', color: '#333', marginBottom: '1rem' }}>
+          <Stack align="center" spacing="xl" style={{ padding: '0 1rem' }}>
+            <Title 
+              order={1} 
+              style={{ 
+                fontFamily: 'Arial, sans-serif',
+                color: '#2c3e50',
+                textAlign: 'center',
+                marginBottom: '1rem'
+              }}
+            >
               Discord Text Generator
             </Title>
+
 
             <Group position="center" spacing="md" style={{ marginBottom: '1.5rem' }}>
               {colors.formats.map(format => (
@@ -160,7 +169,7 @@ export default function DiscordColoredTextGenerator() {
               ))}
             </Group>
 
-            <Text weight={500} style={{ color: '#555', marginBottom: '0.5rem' }}>Foreground Colors</Text>
+            <Text weight={500} style={{ color: '#555', marginBottom: '0.5rem' }}>FG</Text>
             <Group position="center" spacing="md" style={{ marginBottom: '1.5rem' }}>
               {colors.fg.map(color => (
                 <Tooltip label={`${color.label} (${color.code})`} key={color.code}>
@@ -181,7 +190,7 @@ export default function DiscordColoredTextGenerator() {
               ))}
             </Group>
 
-            <Text weight={500} style={{ color: '#555', marginBottom: '0.5rem' }}>Background Colors</Text>
+            <Text weight={500} style={{ color: '#555', marginBottom: '0.5rem' }}>BG</Text>
             <Group position="center" spacing="md" style={{ marginBottom: '1.5rem' }}>
               {colors.bg.map(color => (
                 <Tooltip label={`${color.label} (${color.code})`} key={color.code}>
@@ -205,7 +214,7 @@ export default function DiscordColoredTextGenerator() {
             <Paper
               ref={editorRef}
               contentEditable
-              p="md"
+              p="xl"
               withBorder
               style={{
                 minHeight: 150,
