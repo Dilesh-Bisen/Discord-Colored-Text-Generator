@@ -7,12 +7,14 @@ import {
   Group,
   Stack,
   Paper,
-  Space,
-  Tooltip
+  Tooltip,
+  Container,
+  Center,
+  Box
 } from '@mantine/core';
 
 export default function DiscordColoredTextGenerator() {
-  const [content, setContent] = useState("Discord Colored Text Generator!");
+  const [content, setContent] = useState("Welcome to Discord Colored Text Generator!");
   const editorRef = useRef(null);
   const [copyCount, setCopyCount] = useState(0);
 
@@ -50,14 +52,14 @@ export default function DiscordColoredTextGenerator() {
 
     const range = selection.getRangeAt(0);
     const span = document.createElement('span');
-    
+
     span.className = `ansi-${code}`;
-    
+
     if (code === '1') span.style.fontWeight = 'bold';
     else if (code === '4') span.style.textDecoration = 'underline';
-    else if (colors.fg.some(c => c.code === code)) 
+    else if (colors.fg.some(c => c.code === code))
       span.style.color = colors.fg.find(c => c.code === code).color;
-    else if (colors.bg.some(c => c.code === code)) 
+    else if (colors.bg.some(c => c.code === code))
       span.style.backgroundColor = colors.bg.find(c => c.code === code).color;
 
     range.surroundContents(span);
@@ -73,11 +75,11 @@ export default function DiscordColoredTextGenerator() {
   const convertToANSI = (node) => {
     let result = '';
     for (const child of node.childNodes) {
-      if (child.nodeType === 3) { 
+      if (child.nodeType === 3) {
         result += child.textContent;
         continue;
       }
-      
+
       if (child.nodeName === 'BR') {
         result += '\n';
         continue;
@@ -101,9 +103,9 @@ export default function DiscordColoredTextGenerator() {
       if (codes.length > 0) {
         result += `\u001b[${codes.join(';')}m`;
       }
-      
+
       result += convertToANSI(child);
-      
+
       if (codes.length > 0) {
         result += '\u001b[0m';
       }
@@ -125,94 +127,110 @@ export default function DiscordColoredTextGenerator() {
   };
 
   return (
-    <Stack align="center" p="md" style={{ maxWidth: 800, margin: '0 auto' }}>
-      <Title order={1}>Discord Text Generator</Title>
-
-      <Group>
-        {colors.formats.map(format => (
-          <Tooltip label={format.label} key={format.code}>
-            <Button
-              variant="outline"
-              onClick={() => format.code === '0' ? resetAll() : applyStyle(format.code)}
-            >
-              {format.label}
-            </Button>
-          </Tooltip>
-        ))}
-      </Group>
-
-      <Text weight={500}>FG</Text>
-      <Group>
-        {colors.fg.map(color => (
-          <Tooltip label={`${color.label} (${color.code})`} key={color.code}>
-            <Button
-              style={{ backgroundColor: color.color }}
-              onClick={() => applyStyle(color.code)}
-            >
-              &nbsp;
-            </Button>
-          </Tooltip>
-        ))}
-      </Group>
-
-      <Text weight={500}>BG</Text>
-      <Group>
-        {colors.bg.map(color => (
-          <Tooltip label={`${color.label} (${color.code})`} key={color.code}>
-            <Button
-              style={{ backgroundColor: color.color }}
-              onClick={() => applyStyle(color.code)}
-            >
-              &nbsp;
-            </Button>
-          </Tooltip>
-        ))}
-      </Group>
-
-      <Paper
-        ref={editorRef}
-        contentEditable
-        p="md"
-        withBorder
+    <Center style={{ height: '100vh' }}>
+      <Box
+        p="2rem"
         style={{
-          minHeight: 150,
-          width: '100%',
-          textAlign: 'left',
-          whiteSpace: 'pre-wrap',
-          fontFamily: 'monospace'
+          backgroundColor: '#f3f3f3',
+          borderRadius: '12px',
+          boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+          maxWidth: '800px',
+          width: '80%',
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
-
-      <Button 
-        onClick={copyToClipboard} 
-        color={copyCount > 3 ? 'red' : 'blue'}
       >
-        Copy text as Discord formatted
-      </Button>
+        <Container size="md">
+          <Stack align="center" spacing="xl">
+            <Title order={1} style={{ fontFamily: 'Arial, sans-serif', color: '#333', marginBottom: '1rem' }}>
+              Discord Text Generator
+            </Title>
 
-      <style jsx global>{`
-        .ansi-1 { font-weight: bold !important; }
-        .ansi-4 { text-decoration: underline !important; }
-        
-        .ansi-30 { color: #4f545c !important; }
-        .ansi-31 { color: #dc322f !important; }
-        .ansi-32 { color: #859900 !important; }
-        .ansi-33 { color: #b58900 !important; }
-        .ansi-34 { color: #268bd2 !important; }
-        .ansi-35 { color: #d33682 !important; }
-        .ansi-36 { color: #2aa198 !important; }
-        .ansi-37 { color: #ffffff !important; }
-        
-        .ansi-40 { background-color: #002b36 !important; }
-        .ansi-41 { background-color: #cb4b16 !important; }
-        .ansi-42 { background-color: #586e75 !important; }
-        .ansi-43 { background-color: #657b83 !important; }
-        .ansi-44 { background-color: #839496 !important; }
-        .ansi-45 { background-color: #6c71c4 !important; }
-        .ansi-46 { background-color: #93a1a1 !important; }
-        .ansi-47 { background-color: #fdf6e3 !important; }
-      `}</style>
-    </Stack>
+            <Group position="center" spacing="md" style={{ marginBottom: '1.5rem' }}>
+              {colors.formats.map(format => (
+                <Tooltip label={format.label} key={format.code}>
+                  <Button
+                    variant="outline"
+                    onClick={() => format.code === '0' ? resetAll() : applyStyle(format.code)}
+                    style={{ borderColor: '#333', color: '#333', fontWeight: 'bold' }}
+                  >
+                    {format.label}
+                  </Button>
+                </Tooltip>
+              ))}
+            </Group>
+
+            <Text weight={500} style={{ color: '#555', marginBottom: '0.5rem' }}>Foreground Colors</Text>
+            <Group position="center" spacing="md" style={{ marginBottom: '1.5rem' }}>
+              {colors.fg.map(color => (
+                <Tooltip label={`${color.label} (${color.code})`} key={color.code}>
+                  <Button
+                    style={{
+                      backgroundColor: color.color,
+                      border: '1px solid #ddd',
+                      padding: '1rem',
+                      borderRadius: '4px',
+                      width: '2rem',
+                      height: '2rem'
+                    }}
+                    onClick={() => applyStyle(color.code)}
+                  >
+                    &nbsp;
+                  </Button>
+                </Tooltip>
+              ))}
+            </Group>
+
+            <Text weight={500} style={{ color: '#555', marginBottom: '0.5rem' }}>Background Colors</Text>
+            <Group position="center" spacing="md" style={{ marginBottom: '1.5rem' }}>
+              {colors.bg.map(color => (
+                <Tooltip label={`${color.label} (${color.code})`} key={color.code}>
+                  <Button
+                    style={{
+                      backgroundColor: color.color,
+                      border: '1px solid #ddd',
+                      padding: '1rem',
+                      borderRadius: '4px',
+                      width: '2rem',
+                      height: '2rem'
+                    }}
+                    onClick={() => applyStyle(color.code)}
+                  >
+                    &nbsp;
+                  </Button>
+                </Tooltip>
+              ))}
+            </Group>
+
+            <Paper
+              ref={editorRef}
+              contentEditable
+              p="md"
+              withBorder
+              style={{
+                minHeight: 150,
+                width: '100%',
+                textAlign: 'left',
+                whiteSpace: 'pre-wrap',
+                fontFamily: 'monospace',
+                borderColor: '#ddd',
+                backgroundColor: '#fff',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                marginBottom: '1.5rem'
+              }}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+
+            <Button
+              onClick={copyToClipboard}
+              color={copyCount > 3 ? 'red' : 'blue'}
+              style={{ fontWeight: 'bold', borderRadius: '4px' }}
+            >
+              Copy text as Discord formatted
+            </Button>
+          </Stack>
+        </Container>
+      </Box>
+    </Center>
   );
 }
