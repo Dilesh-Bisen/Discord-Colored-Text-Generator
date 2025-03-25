@@ -129,7 +129,7 @@ export default function DiscordColoredTextGenerator() {
   return (
     <Center style={{ height: '100vh' }}>
       <Box
-        p="2rem"
+        p="1rem"
         style={{
           backgroundColor: '#f3f3f3',
           borderRadius: '12px',
@@ -141,27 +141,34 @@ export default function DiscordColoredTextGenerator() {
         }}
       >
         <Container size="md">
-          <Stack align="center" spacing="xl" style={{ padding: '0 1rem' }}>
-            <Title 
-              order={1} 
-              style={{ 
+          <Stack align="center" spacing="xl" style={{ padding: '2rem 2rem' }}>
+            <Title
+              order={1}
+              style={{
                 fontFamily: 'Arial, sans-serif',
                 color: '#2c3e50',
                 textAlign: 'center',
-                marginBottom: '1rem'
+                marginBottom: '2rem',
+                marginTop: '0rem'
               }}
             >
               Discord Text Generator
             </Title>
 
 
-            <Group position="center" spacing="md" style={{ marginBottom: '1.5rem' }}>
+            <Group spacing="xs" grow>
               {colors.formats.map(format => (
                 <Tooltip label={format.label} key={format.code}>
                   <Button
                     variant="outline"
                     onClick={() => format.code === '0' ? resetAll() : applyStyle(format.code)}
-                    style={{ borderColor: '#333', color: '#333', fontWeight: 'bold' }}
+                    style={{
+                      borderColor: '#e0e0e0',
+                      color: '#424242',
+                      fontWeight: 500,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em'
+                    }}
                   >
                     {format.label}
                   </Button>
@@ -233,7 +240,7 @@ export default function DiscordColoredTextGenerator() {
             <Button
               onClick={copyToClipboard}
               color={copyCount > 3 ? 'red' : 'blue'}
-              style={{ fontWeight: 'bold', borderRadius: '4px' }}
+              style={{borderRadius: '4px' }}
             >
               Copy text as Discord formatted
             </Button>
