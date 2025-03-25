@@ -17,6 +17,7 @@ export default function DiscordColoredTextGenerator() {
   const [content, setContent] = useState("Welcome to Discord Colored Text Generator!");
   const editorRef = useRef(null);
   const [copyCount, setCopyCount] = useState(0);
+  const [isCopied, setIsCopied] = useState(false);
 
   const colors = {
     formats: [
@@ -123,19 +124,24 @@ export default function DiscordColoredTextGenerator() {
         "Dominating!!", "Rampage!!"
       ];
       setCopyCount(prev => Math.min(prev + 1, funnyMessages.length - 1));
+      setIsCopied(true);
+
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 3000); 
     });
   };
 
   return (
     <Center style={{ height: '100vh' }}>
       <Box
-        p="1rem"
+        p="3rem"
         style={{
           backgroundColor: '#f3f3f3',
           borderRadius: '12px',
           boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
-          maxWidth: '800px',
-          width: '80%',
+          maxWidth: '1000px',
+          width: '95%',
           marginLeft: 'auto',
           marginRight: 'auto'
         }}
@@ -154,7 +160,6 @@ export default function DiscordColoredTextGenerator() {
             >
               Discord Text Generator
             </Title>
-
 
             <Group spacing="xs" grow>
               {colors.formats.map(format => (
@@ -224,7 +229,7 @@ export default function DiscordColoredTextGenerator() {
               p="xl"
               withBorder
               style={{
-                minHeight: 150,
+                minHeight: 250,
                 width: '100%',
                 textAlign: 'left',
                 whiteSpace: 'pre-wrap',
@@ -237,13 +242,21 @@ export default function DiscordColoredTextGenerator() {
               dangerouslySetInnerHTML={{ __html: content }}
             />
 
-            <Button
-              onClick={copyToClipboard}
-              color={copyCount > 3 ? 'red' : 'blue'}
-              style={{borderRadius: '4px' }}
-            >
-              Copy text as Discord formatted
-            </Button>
+            <Center>
+              <Button
+                onClick={copyToClipboard}
+                style={{
+                  borderRadius: '4px',
+                  backgroundColor: isCopied ? 'green' : '#007bff',
+                  color: 'white',
+                  transition: 'background-color 0.3s',
+                  padding: '1rem 2rem',
+                  fontSize: '1rem'
+                }}
+              >
+                {isCopied ? 'Copied!' : 'Copy text as Discord formatted'}
+              </Button>
+            </Center>
           </Stack>
         </Container>
       </Box>
